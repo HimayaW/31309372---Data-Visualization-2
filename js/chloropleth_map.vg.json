@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Total Asylum Applications by Countries",
+  "width": 800,
+  "height": 600,
+  "data": {
+    "url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/js/ne_110m_admin_0_countries.topojson",
+    "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+  },
+  "transform": [{
+      "lookup": "properties.NAME",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Origin%20Country%20Applications.csv"
+        },
+        "key": "Country_of_origin",
+        "fields": ["Total_asylum_applications"]
+      }
+    }
+  ],
+  "projection": {
+    "type": "equirectangular"
+  },
+  "mark": {
+    "type": "geoshape"
+    },
+  "encoding": {
+    "color": {
+      "field": "Total_asylum_applications",
+      "type": "quantitative"
+    },
+    "tooltip": [
+      {"field": "properties.NAME", "type": "nominal", "title": "Country_of_origin"},
+      {"field": "Total_asylum_applications", "type": "quantitative"}
+    ]
+  },
+  "config": {}
+}
