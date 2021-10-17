@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background":"#facdcd",
+  "title": "Top 10 Countries that reject the most number of Asylum applicants",
+  "height": 300,
+  "width": 400,
+  "data": {"url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Country%20Rejections.csv"},
+  "encoding": {
+    "x": {"field": "Year", "type": "ordinal", "title": "Year"},
+    "y": {"field": "Total rejected decisions", "type": "quantitative", "title": "Rejected applicants"},
+    "color": {
+      "condition": {
+        "param": "hover",
+        "field":"Country of Asylum",
+        "type":"nominal",
+        "legend": null
+      },
+      "value": "grey"
+    },
+    "opacity": {
+      "condition": {
+        "param": "hover",
+        "value": 1
+      },
+      "value": 0.2
+    }
+  },
+  "layer": [{
+    "description": "transparent layer to make it easier to trigger selection",
+    "params": [{
+      "name": "hover",
+      "value": [{"Country of Asylum": "Germany"}],
+      "select": {
+        "type": "point",
+        "fields": ["Country of Asylum"],
+        "on": "mouseover"
+      }
+    }],
+    "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"},
+    "encoding": {
+      "tooltip": [
+      {"field": "Total rejected decisions", "type": "quantitative", "title": "Rejected applicants"},
+      {"field": "Year", "type": "ordinal"}
+    ]
+    }
+  }, {
+    "mark": "line"
+  }, {
+    "encoding": {
+      "x": {"aggregate": "max", "field": "Year"},
+      "y": {"aggregate": {"argmax": "Year"}, "field": "Total rejected decisions"}
+    },
+    "layer": [{
+      "mark": {"type": "circle"}
+    }, {
+      "mark": {"type": "text", "align": "left", "dx": 4},
+      "encoding": {"text": {"field":"Country of Asylum", "type": "nominal"}}
+    }]
+  }],
+  "config": {"view": {"stroke": null}}
+}
