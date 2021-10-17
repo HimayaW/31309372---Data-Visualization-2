@@ -1,0 +1,96 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Total Asylum Seeker Applications from Country of origin (2006 - 2020)",
+  "width": 600,
+  "height": 700,
+  "params": [
+    {
+      "name": "Year",
+      "value": 2006,
+      "bind": {
+        "input": "range",
+        "min": 2006,
+        "max": 2020,
+        "step": 1,
+        "name": "Year:  "
+      }
+    }
+  ],
+  "projection": {
+    "type": "equirectangular"
+  },
+  "layer": [
+    {
+      "data": {
+        "url":  
+"https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/js/ne_110m_admin_0_countries.topojson",
+ 
+        "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+      },
+      "transform": [
+        {
+          "calculate": "'Data is not available in ' + datum.properties.NAME",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "fill": "#ddd",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {"tooltip": {"field": "note"}}
+    },
+    {
+      "data": {
+        "url":  "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Origin%20Country%20Applications.csv"
+      },
+      "transform": [
+        {
+          "lookup": "Country of origin",
+          "from": {
+            "data": {
+              "url":  "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/js/ne_110m_admin_0_countries.topojson",
+ 
+              "format": {
+                "type": "topojson",
+                "feature": "ne_110m_admin_0_countries"
+              }
+            },
+            "key": "properties.NAME"
+          },
+          "as": "geo"
+        },
+        {"filter": "datum.Year == Year"}
+      ],
+      "mark": {"type": "geoshape", "stroke": "#fff", "strokeWidth": 0.5},
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "Total asylum applications",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              1000,
+              5000,
+              150000
+            ],
+            "scheme": "reds"
+          },
+          "legend": {"format": ".2s"}
+        },
+        "tooltip": [
+          {"field": "Country of origin", "type": "nominal"},
+          {
+            "field": "Total asylum applications",
+            "type": "quantitative",
+            "title": "Total Applications",
+            "format": ","
+          },
+          {"field": "Year", "type": "quantitative", "title": "Year"}
+        ]
+      }
+    }
+  ],
+  "config": {}
+}
