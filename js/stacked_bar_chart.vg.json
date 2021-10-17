@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Total Accepted Applicants",
+  "width": 500,
+  "height": 200,
+  "data": {"url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Asylum%20Type%20of%20Acceptance.csv"},
+  "params": [
+    {
+      "name": "Year",
+      "value": 2006,
+      "bind": {
+        "input": "range",
+        "min": 2006,
+        "max": 2020,
+        "step": 1,
+        "name": "Year:  "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "datum.Year == Year"}
+  ],
+  "mark":{"type": "bar", "tooltip": true},
+  "encoding": {
+    "x": {
+      "field": "Country of Asylum",
+      "type": "nominal",
+      "sort": "-y",
+      "title": "Country of Asylum"
+    },
+    "y": {
+        "field": "Value",
+      "type": "quantitative",
+      "title": "Total accepted applicants"
+    },
+    "color": {
+      "field": "Type of acceptance",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Recognized Applicants",
+          "Complementary protection"
+        ],
+        "range": [
+          "#f6573f",
+          "#fcab8f"
+        ]
+      }
+      }
+  },
+  "config": {}
+}
