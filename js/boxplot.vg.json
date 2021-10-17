@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background":"#fcd6d6",
+  "title": "Recognition Rate of Asylum seekers throughout 2006 and 2020",
+  "height": 400,
+  "width": 500,
+  "data": {"url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Asylum%20Decisions.csv"},
+  "params": [
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "mouseover"}
+    },
+    {"name": "select", "select": "point"}
+  ],
+  "transform": [
+    {"filter": {"field": "Recognition Rate", "gt":0}}
+  ],
+  "mark": {"type": "boxplot","color":"#f78866", "median": { "stroke":"#ffffff", "strokeWidth": 4}},
+  "encoding": {
+    "x": {"field": "Year", "type": "ordinal"},
+    "y": {
+      "field": "Recognition Rate",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
+    "size": {"value":20}
+  }
+}
