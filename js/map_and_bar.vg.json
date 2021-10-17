@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background":"#fad3d3",
+    "params": [
+  {
+    "name": "Year",
+    "value": 2006,
+    "bind": {
+      "input": "range",
+      "min": 2006,
+      "max": 2020,
+      "step": 1,
+      "name": "Year:  "
+    }
+  }
+],
+  "hconcat": [
+    {
+      "width": 550,
+      "height": 400,
+      "title": "Total Asylum Seeker Applications from Country of origin (2006 - 2020)",
+      "projection": {
+        "type": "equirectangular"},
+      "layer": [
+  {
+    "data": {
+      "url":  
+"https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/js/ne_110m_admin_0_countries.topojson",
+
+      "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+    },
+    "transform": [
+      {
+        "calculate": "'Data is not available in ' + datum.properties.NAME",
+        "as": "note"
+      }
+    ],
+    "mark": {
+      "type": "geoshape",
+      "fill": "#ddd",
+      "stroke": "white",
+      "strokeWidth": 1
+    },
+    "encoding": {"tooltip": {"field": "note"}}
+  },
+  {
+    "data": {
+      "url":  "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Origin%20Country%20Applications.csv"
+    },
+    "transform": [
+      {
+        "lookup": "Country of origin",
+        "from": {
+          "data": {
+            "url":  "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/js/ne_110m_admin_0_countries.topojson",
+
+            "format": {
+              "type": "topojson",
+              "feature": "ne_110m_admin_0_countries"
+            }
+          },
+          "key": "properties.NAME"
+        },
+        "as": "geo"
+      },
+      {"filter": "datum.Year == Year"}
+    ],
+    "mark": {"type": "geoshape", "stroke": "#fff", "strokeWidth": 1},
+    "encoding": {
+      "shape": {"field": "geo", "type": "geojson"},
+      "color": {
+        "field": "Total asylum applications",
+        "type": "quantitative",
+        "scale": {
+          "domain": [
+            1000,
+            5000,
+            150000
+          ],
+          "range": ["#fc9272","#fb6a4a","#ef3b2c","#99000d"]
+        },
+        "legend": {"format": ".2s"}
+      },
+      "tooltip": [
+        {"field": "Country of origin", "type": "nominal"},
+        {
+          "field": "Total asylum applications",
+          "type": "quantitative",
+          "title": "Total Applications",
+          "format": ","
+        },
+        {"field": "Year", "type": "quantitative", "title": "Year"}
+      ]
+    }
+  }
+]
+    },
+    {
+      "title": "Total Accepted Asylum Applicants",
+"width": 200,
+"height": 200,
+"data": {"url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Asylum%20Type%20of%20Acceptance.csv"
+    },
+    "transform": [
+  {"filter": "datum.Year == Year"}
+],
+    "mark":{"type": "bar", "tooltip": true},
+"encoding": {
+  "x": {
+    "field": "Country of Asylum",
+    "type": "nominal",
+    "sort": "-y",
+    "title": "Country of Asylum"
+  },
+  "y": {
+      "field": "Value",
+    "type": "quantitative",
+    "title": "Total accepted applicants"
+  },
+  "color": {
+    "field": "Type of acceptance",
+    "type": "nominal",
+    "scale": {
+      "domain": [
+        "Recognized Applicants",
+        "Complementary protection"
+      ],
+      "range": [
+        "#cb181d",
+        "#fb6a4a"
+      ]
+    }
+    }
+  }
+    }
+  ]
+}

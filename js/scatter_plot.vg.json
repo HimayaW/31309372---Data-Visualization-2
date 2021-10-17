@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background":"#fcd6d6",
+  "view": {"fill": "#facbcb"},
+  "title":"Relationship between the rejection rates and closed application rates",
+  "width": 500,
+  "height": 400,
+  "data": {"url": "https://raw.githubusercontent.com/HimayaW/31309372---Data-Visualization-2/main/data/Asylum%20Decisions.csv"},
+  "transform": [
+    {"filter": {"field": "Rejection Rate", "gt":0}},
+    {"filter": {"field": "Closed decision rate", "gt":0}}
+  ],
+  "layer":[
+    {
+      "mark": {"type": "circle", "color": "darkred"},
+  "encoding": {
+    "x": {"field": "Rejection Rate", "type": "quantitative"},
+    "y": {"field": "Closed decision rate", "type": "quantitative"},
+    "tooltip":[
+      {"field": "Rejection Rate", "type": "quantitative"},
+      {"field": "Closed decision rate", "type": "quantitative"}
+    ]
+  }
+    },
+    {
+      "mark": {
+          "type": "text",
+          "align": "right",
+          "baseline": "bottom",
+          "dx": -1,
+          "dy": -120,
+          "x": "width",
+          "text": "There is a negative relationship between the",
+          "font": "sans-serif",
+          "fontWeight": "normal"
+        }
+    },
+    {
+      "mark": {
+          "type": "text",
+          "align": "right",
+          "baseline": "bottom",
+          "dx": -1,
+          "dy": -106,
+          "x": "width",
+          "text": "rejection rates and the closed application rates",
+          "font": "sans-serif",
+          "fontWeight": "normal"
+        }
+    }
+  ],
+  "config": {}
+}
